@@ -1,0 +1,9 @@
+credentials:
+  - github: $GITHUB_TOKEN
+  - devpi:
+
+checks:
+  - foo
+publish:
+  - poetry # could be poetry.build followed by devpi
+  - devpi
