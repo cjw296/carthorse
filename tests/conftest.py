@@ -1,3 +1,5 @@
+from os import chdir
+
 import pytest
 from testfixtures import TempDirectory
 
@@ -5,4 +7,5 @@ from testfixtures import TempDirectory
 @pytest.fixture()
 def dir():
     with TempDirectory(encoding='ascii') as dir:
+        chdir(dir.path)
         yield dir
