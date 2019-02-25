@@ -1,15 +1,8 @@
 from textwrap import dedent
 
-import pytest
-from testfixtures import TempDirectory, compare
+from testfixtures import compare
 
 from carthorse.config import load_config
-
-
-@pytest.fixture()
-def dir():
-    with TempDirectory(encoding='ascii') as dir:
-        yield dir
 
 
 def write(dir, filename, text):
