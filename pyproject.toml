@@ -6,6 +6,8 @@ authors = ["Chris Withers <chris@withers.org>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+toml = "^0.10.0"
+pyyaml = "^3.13"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
