@@ -36,6 +36,10 @@ def a_func(a, b, c):
     return a, b, c
 
 
+def b_func(version):
+    return 'v'+version
+
+
 class TestConfig(object):
 
     def test_parse_yaml(self, dir):
@@ -80,3 +84,16 @@ class TestConfig(object):
         from . import test_config
         result = config.run(test_config, config['version-from'])
         compare(result, expected=(1, 2, 3))
+
+    def test_run_with_version(self, dir):
+        path = dir.write('test.toml', """
+        [tool.carthorse]
+        version-from = { name="b-func" }
+        when = []
+        actions = []
+        """)
+        config = load_config(path)
+        config.version = '1.2.3'
+        from . import test_config
+        result = config.run(test_config, config['version-from'])
+        compare(result, expected='v1.2.3')
