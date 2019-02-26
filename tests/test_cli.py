@@ -40,7 +40,7 @@ def test_when_stops(dir):
         'version-from':
             {'name': 'dummy'},
         'when': [
-            {'name': 'dummy1'},
+            {'name': 'never'},
             {'name': 'dummy2'},
         ],
         'actions': [
@@ -50,15 +50,12 @@ def test_when_stops(dir):
     with Replacer() as r:
         r.replace('carthorse.version_from.dummy', m.version_from, strict=False)
         m.version_from.return_value = '1.2.3'
-        r.replace('carthorse.when.dummy1', m.when1, strict=False)
-        m.when1.return_value = False
         r.replace('carthorse.when.dummy2', m.when2, strict=False)
         r.replace('carthorse.actions.dummy', m.action, strict=False)
         r.replace('sys.argv', ['x'])
         main()
     compare(m.mock_calls, expected=[
         call.version_from(),
-        call.when1(version='1.2.3'),
     ])
 
 
