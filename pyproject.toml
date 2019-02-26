@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Safely creating releases when you change the version number."
 authors = ["Chris Withers <chris@withers.org>"]
 
+[tool.poetry.scripts]
+carthorse = "carthorse.cli:main"
+
 [tool.poetry.dependencies]
 python = "^3.7"
 toml = "^0.10.0"
