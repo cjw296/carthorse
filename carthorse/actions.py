@@ -2,6 +2,7 @@ from subprocess import check_call
 
 
 def run(command):
+    print('$ '+command)
     check_call(command, shell=True)
 
 

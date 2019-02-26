@@ -29,12 +29,12 @@ class TestRun(object):
 
     def test_simple(self, capfd):
         run('echo hello')
-        compare(capfd.readouterr().out, expected='hello\n')
+        compare(capfd.readouterr().out, expected='$ echo hello\nhello\n')
 
     def test_env(self, capfd):
         with Replace('os.environ.GREETING', 'hello', strict=False):
             run('echo $GREETING')
-            compare(capfd.readouterr().out, expected='hello\n')
+            compare(capfd.readouterr().out, expected='$ echo $GREETING\nhello\n')
 
     def test_bad(self, capfd):
         with ShouldRaise(CalledProcessError):
