@@ -1,9 +1,10 @@
+import os
 from subprocess import CalledProcessError
 from textwrap import dedent
 
 from testfixtures import compare, Replace, ShouldRaise
 
-from carthorse.actions import run
+from carthorse.actions import run, git_tag
 from carthorse.version_from import poetry
 from carthorse.when import never
 
@@ -38,4 +39,22 @@ class TestRun(object):
     def test_bad(self, capfd):
         with ShouldRaise(CalledProcessError):
             run('/dev/null')
+        capfd.readouterr()
+
+
+class TestCreateTag(object):
+
+    def test_simple(self, git, capfd):
+        with Replace('os.environ.VERSION', '1.2.3', strict=False):
+            git.make_repo_with_content('remote')
+            git('clone remote local', git.dir.path)
+            git.check_tags(repo='local', expected={})
+            git.check_tags(repo='remote', expected={})
+            rev = git.rev_parse('HEAD')
+
+            os.chdir(git.dir.getpath('local'))
+            git_tag()
+
+            git.check_tags(repo='local', expected={b'v1.2.3': rev})
+            git.check_tags(repo='remote', expected={b'v1.2.3': rev})
         capfd.readouterr()
