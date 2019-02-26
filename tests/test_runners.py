@@ -1,6 +1,7 @@
+from subprocess import CalledProcessError
 from textwrap import dedent
 
-from testfixtures import compare, Replace
+from testfixtures import compare, Replace, ShouldRaise
 
 from carthorse.actions import run
 from carthorse.version_from import poetry
@@ -33,3 +34,8 @@ class TestRun(object):
         with Replace('os.environ.GREETING', 'hello', strict=False):
             run('echo $GREETING')
             compare(capfd.readouterr().out, expected='hello\n')
+
+    def test_bad(self, capfd):
+        with ShouldRaise(CalledProcessError):
+            run('/dev/null')
+        capfd.readouterr()

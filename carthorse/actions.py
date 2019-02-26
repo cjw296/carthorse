@@ -1,5 +1,5 @@
-from subprocess import call
+from subprocess import check_call
 
 
 def run(command):
-    call(command, shell=True)
+    check_call(command, shell=True)
