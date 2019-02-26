@@ -8,8 +8,6 @@ from toml import load as parse_toml
 
 class Config(object):
 
-    version = None
-
     def __init__(self, path):
         with open(path) as source:
             data = self.parse(source)
@@ -41,8 +39,6 @@ class Config(object):
     def run(self, module, config):
         func = getattr(module, config['name'].replace('-', '_'))
         kw = config['kw'].copy()
-        if self.version:
-            kw['version'] = self.version
         return func(*config['args'], **kw)
 
 

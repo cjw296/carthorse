@@ -15,8 +15,7 @@ def main():
     args = parse_args()
     config = load_config(args.config)
 
-    config.version = config.run(version_from, config['version-from'])
-    os.environ['VERSION'] = config.version
+    os.environ['VERSION'] = config.run(version_from, config['version-from'])
 
     ok = True
     for check in config['when']:

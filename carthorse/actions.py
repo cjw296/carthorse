@@ -1,5 +1,5 @@
 from subprocess import call
 
 
-def run(command, version=None):
+def run(command):
     call(command, shell=True)

@@ -1,2 +1,2 @@
-def never(version):
+def never():
     pass

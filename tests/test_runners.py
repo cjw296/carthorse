@@ -20,16 +20,16 @@ class TestVersionFrom(object):
 class TestWhen(object):
 
     def test_never(self):
-        assert not never(version='why?')
+        assert not never()
 
 
 class TestRun(object):
 
     def test_simple(self, capfd):
-        run('echo hello', version='foo')
+        run('echo hello')
         compare(capfd.readouterr().out, expected='hello\n')
 
     def test_env(self, capfd):
         with Replace('os.environ.GREETING', 'hello', strict=False):
-            run('echo $GREETING', version='foo')
+            run('echo $GREETING')
             compare(capfd.readouterr().out, expected='hello\n')

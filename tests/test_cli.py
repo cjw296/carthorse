@@ -11,7 +11,7 @@ def test_run_through(dir):
     m = Mock()
     dir.write('pyproject.toml', toml.dumps({'tool': {'carthorse': {
         'version-from':
-            {'name': 'dummy', 'version': '1.2.3'},
+            {'name': 'dummy', 'param': 'value'},
         'when': [
             {'name': 'dummy'},
         ],
@@ -28,10 +28,10 @@ def test_run_through(dir):
         r.replace('sys.argv', ['x'])
         main()
     compare(m.mock_calls, expected=[
-        call.version_from(version='1.2.3'),
-        call.when(version='1.2.3'),
-        call.action('action 1', version='1.2.3'),
-        call.action('action 2', version='1.2.3')
+        call.version_from(param='value'),
+        call.when(),
+        call.action('action 1', ),
+        call.action('action 2', )
     ])
 
 
@@ -83,7 +83,7 @@ def test_exception_during_action(dir):
 
     compare(m.mock_calls, expected=[
         call.version_from(),
-        call.when1(version='1.2.3'),
+        call.when1(),
     ])
 
 
