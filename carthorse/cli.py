@@ -1,3 +1,4 @@
+import os
 from argparse import ArgumentParser
 
 from .config import load_config
@@ -15,6 +16,7 @@ def main():
     config = load_config(args.config)
 
     config.version = config.run(version_from, config['version-from'])
+    os.environ['VERSION'] = config.version
 
     ok = True
     for check in config['when']:
