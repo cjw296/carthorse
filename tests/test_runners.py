@@ -57,6 +57,15 @@ class TestWhenVersionNotTagged(object):
             ))
             compare(err, expected='')
 
+    def test_not_in_git_repo(self, dir, capfd):
+        with Replace('os.environ.TAG', 'v1.2.3', strict=False):
+            with ShouldRaise(CalledProcessError):
+                version_not_tagged()
+        out, err = capfd.readouterr()
+        compare(out, expected='$ git rev-parse --verify -q v1.2.3\n')
+        compare(err,
+                expected='fatal: not a git repository (or any of the parent directories): .git\n')
+
     def test_version_tagged_upstream(self):
         assert not never()
 
