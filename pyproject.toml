@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "carthorse"
-version = "0.1.0"
+version = "1.0.0"
 description = "Safely creating releases when you change the version number."
 authors = ["Chris Withers <chris@withers.org>"]
 
