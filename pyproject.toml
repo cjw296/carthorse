@@ -17,6 +17,16 @@ pytest = "^3.0"
 testfixtures = "^6.4"
 pytest-cov = "^2.6"
 
+[tool.carthorse]
+version-from = "poetry"
+when = [
+  "version-not-tagged"
+]
+actions = [
+   { run="poetry publish --username chrisw --password $POETRY_PASS --build"},
+   { name="create-tag"},
+]
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
