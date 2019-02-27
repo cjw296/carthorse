@@ -3,6 +3,17 @@ version: 2.1
 orbs:
   python: cjw296/python-ci@1
 
+jobs:
+  release:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          name: "Release"
+          command: |
+            carthorse
+
 common: &common
   jobs:
 
@@ -15,6 +26,13 @@ common: &common
         name: coverage
         requires:
           - python37
+
+    - release:
+        requires:
+          - coverage
+        filters:
+          branches:
+            only: master
 
 workflows:
   push:
