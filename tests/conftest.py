@@ -27,7 +27,7 @@ class GitHelper(object):
             raise RuntimeError('{0.cmd}: {0.output}'.format(e))
 
     def rev_parse(self, label, repo=None):
-        return self('rev-parse --verify -q --short ' + label, repo).strip()
+        return self('rev-parse --verify -q ' + label, repo).strip().decode('ascii')
 
     def check_tags(self, expected, repo=None):
         actual = {}
