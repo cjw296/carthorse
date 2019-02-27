@@ -78,6 +78,8 @@ class TestWhenVersionNotTagged(object):
             git.check_tags(repo='remote', expected={b'v1.2.3': rev})
             os.chdir(git.dir.getpath('local'))
             git.dir.write('local/a', 'changed')
+            git('config user.email "test@example.com"')
+            git('config user.name "Test User"')
             git("commit -am changed")
 
             assert not version_not_tagged()
