@@ -1,8 +1,11 @@
 [tool.poetry]
 name = "carthorse"
-version = "1.0.0"
+version = "1.0.1"
 description = "Safely creating releases when you change the version number."
+license = "MIT"
 authors = ["Chris Withers <chris@withers.org>"]
+readme = "README.rst"
+repository = "https://github.com/cjw296/carthorse"
 
 [tool.poetry.scripts]
 carthorse = "carthorse.cli:main"
