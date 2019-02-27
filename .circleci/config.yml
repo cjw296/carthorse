@@ -10,10 +10,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Install Project"
+          command: poetry install
+      - run:
           name: "Release"
-          command: |
-            poetry install
-            carthorse
+          command: poetry run carthorse
 
 common: &common
   jobs:
