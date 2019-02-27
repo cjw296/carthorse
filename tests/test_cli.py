@@ -87,31 +87,58 @@ def test_exception_during_action(dir):
     ])
 
 
-def test_version_from_env(dir):
-    versions_seen = []
-    def record_version(version=None):
-        versions_seen.append(os.environ.get('VERSION'))
+def check_tag_from_env(dir, config, expected):
+    tags_seen = []
+    def record_tag():
+        tags_seen.append(os.environ.get('TAG'))
         return True
     m = Mock()
-    dir.write('pyproject.toml', toml.dumps({'tool': {'carthorse': {
-        'version-from':
-            {'name': 'dummy'},
-        'when': [
-            {'name': 'dummy'},
-        ],
-        'actions': [
-            {'name': 'dummy'},
-        ]
-    }}}))
+    dir.write('pyproject.toml', toml.dumps(config))
     with Replacer() as r:
         r.replace('carthorse.version_from.dummy', m.version_from, strict=False)
         m.version_from.return_value = '1.2.3'
-        r.replace('carthorse.when.dummy', record_version, strict=False)
-        r.replace('carthorse.actions.dummy', record_version, strict=False)
+        r.replace('carthorse.when.dummy', record_tag, strict=False)
+        r.replace('carthorse.actions.dummy', record_tag, strict=False)
         r.replace('sys.argv', ['x'])
-        r.replace('sys.environ.VERSION', not_there, strict=False)
+        r.replace('sys.environ.TAG', not_there, strict=False)
         main()
-    compare(versions_seen, expected=[
-        '1.2.3',
-        '1.2.3',
-    ])
+    compare(tags_seen, expected=expected)
+
+
+def test_tag_from_env(dir):
+    check_tag_from_env(
+        dir,
+        config={'tool': {'carthorse': {
+            'version-from':
+                {'name': 'dummy'},
+            'when': [
+                {'name': 'dummy'},
+            ],
+            'actions': [
+                {'name': 'dummy'},
+            ]
+        }}},
+        expected=[
+            'v1.2.3',
+            'v1.2.3',
+        ])
+
+
+def test_tag_format_specified(dir):
+    check_tag_from_env(
+        dir,
+        config={'tool': {'carthorse': {
+            'version-from':
+                {'name': 'dummy'},
+            'tag-format': 'x-{version}-y',
+            'when': [
+                {'name': 'dummy'},
+            ],
+            'actions': [
+                {'name': 'dummy'},
+            ]
+        }}},
+        expected=[
+            'x-1.2.3-y',
+            'x-1.2.3-y',
+        ])

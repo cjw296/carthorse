@@ -12,6 +12,7 @@ def write(dir, filename, text):
 EXPECTED_CONFIG = {
     'version-from':
         {'name': 'poetry', 'args': (), 'kw': {}},
+    'tag-format': 'x{version}',
     'when': [
         {'name': 'version-not-tagged', 'args': (), 'kw': {}},
     ],
@@ -19,7 +20,7 @@ EXPECTED_CONFIG = {
         {'name': 'run',
          'args': ("poetry publish --username $POETRY_USER --password $POETRY_PASS --build",),
          'kw': {}},
-        {'name': 'git-tag' , 'args': (), 'kw': {'format': 'v$VERSION'}},
+        {'name': 'create-tag' , 'args': (), 'kw': {}},
         {'name': 'something-else', 'args': (), 'kw': {}},
     ]
 }
@@ -35,12 +36,12 @@ class TestConfig(object):
         path = dir.write('test.yaml', """
         carthorse:
           version-from: poetry
+          tag-format: x{version}
           when:
             - version-not-tagged
           actions:
             - run: "poetry publish --username $POETRY_USER --password $POETRY_PASS --build"
-            - git-tag:
-                format: v$VERSION 
+            - create-tag  
             - something-else
         """)
         config = load_config(path)
@@ -50,12 +51,13 @@ class TestConfig(object):
         path = dir.write('test.toml', """
         [tool.carthorse]
         version-from = "poetry"
+        tag-format = "x{version}"
         when = [
           "version-not-tagged"
         ]
         actions = [
            { run="poetry publish --username $POETRY_USER --password $POETRY_PASS --build"},
-           { name="git-tag", format="v$VERSION" },
+           { name="create-tag"},
            { name="something-else"}
         ]
         """)

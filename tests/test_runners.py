@@ -45,14 +45,14 @@ class TestRun(object):
 class TestCreateTag(object):
 
     def test_simple(self, git, capfd):
-        with Replace('os.environ.VERSION', '1.2.3', strict=False):
+        with Replace('os.environ.TAG', 'v1.2.3', strict=False):
             git.make_repo_with_content('remote')
             git('clone remote local', git.dir.path)
             git.check_tags(repo='local', expected={})
             git.check_tags(repo='remote', expected={})
             rev = git.rev_parse('HEAD')
-
             os.chdir(git.dir.getpath('local'))
+
             git_tag()
 
             git.check_tags(repo='local', expected={b'v1.2.3': rev})

@@ -36,6 +36,9 @@ class Config(object):
     def __getitem__(self, item):
         return self.data[item]
 
+    def get(self, item, default):
+        return self.data.get(item, default)
+
     def run(self, module, config):
         func = getattr(module, config['name'].replace('-', '_'))
         kw = config['kw'].copy()
