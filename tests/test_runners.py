@@ -63,7 +63,7 @@ class TestWhenVersionNotTagged(object):
                 version_not_tagged()
         out, err = capfd.readouterr()
         compare(out, expected='$ git rev-parse --verify -q v1.2.3\n')
-        compare(err,
+        compare(err.lower(),
                 expected='fatal: not a git repository (or any of the parent directories): .git\n')
 
     def test_version_tagged_upstream(self):
