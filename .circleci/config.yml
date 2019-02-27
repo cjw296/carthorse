@@ -12,6 +12,7 @@ jobs:
       - run:
           name: "Release"
           command: |
+            poetry install
             carthorse
 
 common: &common
