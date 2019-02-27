@@ -5,10 +5,6 @@ from testfixtures import compare
 from carthorse.config import load_config
 
 
-def write(dir, filename, text):
-    return dir.write(filename, dedent(text))
-
-
 EXPECTED_CONFIG = {
     'version-from':
         {'name': 'poetry', 'args': (), 'kw': {}},
