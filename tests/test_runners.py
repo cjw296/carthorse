@@ -36,6 +36,7 @@ class TestWhenVersionNotTagged(object):
 
             out, err = capfd.readouterr()
             compare(out, expected=(
+                '$ git remote -v\n'
                 '$ git rev-parse --verify -q 1.2.3\n'
                 'No tag found.\n'
             ))
@@ -52,6 +53,7 @@ class TestWhenVersionNotTagged(object):
 
             out, err = capfd.readouterr()
             compare(out, expected=(
+                '$ git remote -v\n'
                 '$ git rev-parse --verify -q v1.2.3\n'
                 + rev +'\n'
             ))
@@ -62,12 +64,35 @@ class TestWhenVersionNotTagged(object):
             with ShouldRaise(CalledProcessError):
                 version_not_tagged()
         out, err = capfd.readouterr()
-        compare(out, expected='$ git rev-parse --verify -q v1.2.3\n')
+        compare(out, expected='$ git remote -v\n')
         compare(err.lower(),
                 expected='fatal: not a git repository (or any of the parent directories): .git\n')
 
-    def test_version_tagged_upstream(self):
-        assert not never()
+    def test_version_tagged_upstream(self, git, capfd):
+        with Replace('os.environ.TAG', 'v1.2.3', strict=False):
+            git.make_repo_with_content('remote')
+            rev = git.rev_parse('HEAD', 'remote')
+            git('clone remote local', git.dir.path)
+            git('tag v1.2.3', 'remote')
+            git.check_tags(repo='local', expected={})
+            git.check_tags(repo='remote', expected={b'v1.2.3': rev})
+            os.chdir(git.dir.getpath('local'))
+            git.dir.write('local/a', 'changed')
+            git("commit -am changed")
+
+            assert not version_not_tagged()
+
+            git.check_tags(repo='local', expected={b'v1.2.3': rev})
+            git.check_tags(repo='remote', expected={b'v1.2.3': rev})
+
+        out, _ = capfd.readouterr()
+        compare(out, expected=(
+            '$ git remote -v\n'
+            f"{git('remote -v').decode('ascii')}"
+            "$ git fetch origin 'refs/tags/*:refs/tags/*'\n"
+            '$ git rev-parse --verify -q v1.2.3\n'
+            f'{rev}\n'
+        ))
 
 
 class TestRun(object):
