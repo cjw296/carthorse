@@ -15,7 +15,7 @@ def version_not_tagged(remote='origin'):
     if run('git remote -v'):
         run("git fetch {} 'refs/tags/*:refs/tags/*'".format(remote))
     try:
-        tag = run('git rev-parse --verify -q '+version)
+        run('git rev-parse --verify -q '+version)
     except CalledProcessError as e:
         if e.returncode == 1:
             print('No tag found.')

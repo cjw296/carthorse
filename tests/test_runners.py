@@ -2,7 +2,7 @@ import os
 from subprocess import CalledProcessError
 from textwrap import dedent
 
-from testfixtures import compare, Replace, ShouldRaise
+from testfixtures import compare, Replace, ShouldRaise, Replacer
 
 from carthorse.actions import run, create_tag
 from carthorse.version_from import poetry
@@ -67,6 +67,17 @@ class TestWhenVersionNotTagged(object):
         compare(out, expected='$ git remote -v\n')
         compare(err.lower(),
                 expected='fatal: not a git repository (or any of the parent directories): .git\n')
+
+    def test_rev_parse_blows_up(self, dir):
+        def run(command):
+            if 'rev-parse' in command:
+                raise CalledProcessError(42, command)
+        with Replacer() as r:
+            r.replace('os.environ.TAG', 'v1.2.3', strict=False)
+            r.replace('carthorse.when.run', run)
+            with ShouldRaise(CalledProcessError):
+                version_not_tagged()
+
 
     def test_version_tagged_upstream(self, git, capfd):
         with Replace('os.environ.TAG', 'v1.2.3', strict=False):
