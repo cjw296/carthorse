@@ -102,12 +102,15 @@ The following actions are currently available:
   This will create a git tag for the computed tag based on the extracted version and push
   it to the specified remote. By default, the ``origin`` remote is used.
 
+Changes
+-------
+
 1.0.1 (27 Feb 2019)
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 - Better PyPI metadata.
 
 1.0.0 (27 Feb 2019)
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 - First release, supporting poetry and git tagging.
