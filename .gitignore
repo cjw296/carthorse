@@ -1,3 +1,7 @@
 poetry.lock
 dist
 *.egg-info
+.coverage
+.coverage.*
+coverage_output
+
