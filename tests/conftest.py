@@ -1,4 +1,4 @@
-from os import chdir
+from os import chdir, getcwd
 from subprocess import check_output, STDOUT, CalledProcessError
 
 import pytest
@@ -8,8 +8,12 @@ from testfixtures import TempDirectory, compare
 @pytest.fixture()
 def dir():
     with TempDirectory(encoding='ascii') as dir:
+        current = getcwd()
         chdir(dir.path)
-        yield dir
+        try:
+            yield dir
+        finally:
+            chdir(current)
 
 
 class GitHelper(object):
