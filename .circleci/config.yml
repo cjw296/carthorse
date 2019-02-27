@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  python: cjw296/python-ci@1
+
+common: &common
+  jobs:
+
+    - python/poetry-run-tests:
+        name: python37
+        image: circleci/python:3.7
+
+    - python/coverage:
+        name: coverage
+        requires:
+          - python37
+
+workflows:
+  push:
+    <<: *common
+  periodic:
+    <<: *common
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only: master
