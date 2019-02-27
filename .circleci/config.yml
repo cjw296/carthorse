@@ -9,12 +9,12 @@ common: &common
     - python/poetry-run-tests:
         name: python37
         image: circleci/python:3.7
-        command: poetry run pytest
-#
-#    - python/coverage:
-#        name: coverage
-#        requires:
-#          - python37
+        command: poetry run pytest --cov carthorse --cov tests
+
+    - python/coverage:
+        name: coverage
+        requires:
+          - python37
 
 workflows:
   push:
