@@ -39,6 +39,8 @@ class GitHelper(object):
         repo = repo or self.repo
         self.dir.makedir(repo)
         self('init', repo)
+        self('config user.email "test@example.com"', repo)
+        self('config user.name "Test User"', repo)
         self.dir.write([repo, 'a'], 'some content')
         self.dir.write([repo, 'b'], 'other content')
         self.dir.write([repo, 'c'], 'more content')
