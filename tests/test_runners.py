@@ -4,7 +4,7 @@ from textwrap import dedent
 
 from testfixtures import compare, Replace, ShouldRaise
 
-from carthorse.actions import run, git_tag
+from carthorse.actions import run, create_tag
 from carthorse.version_from import poetry
 from carthorse.when import never, version_not_tagged
 
@@ -98,7 +98,7 @@ class TestCreateTag(object):
             rev = git.rev_parse('HEAD')
             os.chdir(git.dir.getpath('local'))
 
-            git_tag()
+            create_tag()
 
             git.check_tags(repo='local', expected={b'v1.2.3': rev})
             git.check_tags(repo='remote', expected={b'v1.2.3': rev})
