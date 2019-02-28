@@ -95,7 +95,7 @@ during the execution of an action, no further actions will be executed.
 The following actions are currently available:
 
 ``run``
-  The the specified command in a shell. The full environment will be passed through and
+  Run the specified command in a shell. The full environment will be passed through and
   ``$TAG`` will contain the tag computed from the tag format.
 
 ``create_tag``
