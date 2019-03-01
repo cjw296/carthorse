@@ -2,7 +2,7 @@ import os
 from argparse import ArgumentParser
 
 from .config import load_config
-from . import version_from, when, actions
+from .plugins import Plugins
 
 
 def parse_args():
@@ -14,17 +14,17 @@ def parse_args():
 def main():
     args = parse_args()
     config = load_config(args.config)
-
-    version = config.run(version_from, config['version-from'])
+    plugins = Plugins.load()
+    version = config.run(plugins['version_from'], config['version-from'])
     tag_format = config.get('tag-format', 'v{version}')
     os.environ['TAG'] = tag_format.format(version=version)
 
     ok = True
     for check in config['when']:
-        ok = config.run(when, check)
+        ok = config.run(plugins['when'], check)
         if not ok:
             break
 
     if ok:
         for action in config['actions']:
-            config.run(actions, action)
+            config.run(plugins['actions'], action)

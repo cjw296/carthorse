@@ -39,10 +39,9 @@ class Config(object):
     def get(self, item, default):
         return self.data.get(item, default)
 
-    def run(self, module, config):
-        func = getattr(module, config['name'].replace('-', '_').replace('.', '_'))
+    def run(self, plugins, config):
         kw = config['kw'].copy()
-        return func(*config['args'], **kw)
+        return plugins[config['name']](*config['args'], **kw)
 
 
 class TomlConfig(Config):

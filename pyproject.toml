@@ -10,8 +10,20 @@ repository = "https://github.com/cjw296/carthorse"
 [tool.poetry.scripts]
 carthorse = "carthorse.cli:main"
 
+[tool.poetry.plugins."carthorse.version_from"]
+"poetry" = "carthorse.version_from:poetry"
+"setup.py" = "carthorse.version_from:setup_py"
+
+[tool.poetry.plugins."carthorse.when"]
+"version-not-tagged" = "carthorse.when:version_not_tagged"
+"never" = "carthorse.when:never"
+
+[tool.poetry.plugins."carthorse.actions"]
+"run" = "carthorse.actions:run"
+"create-tag" = "carthorse.actions:create_tag"
+
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 toml = "^0.10.0"
 pyyaml = "^3.13"
 

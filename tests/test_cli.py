@@ -5,6 +5,7 @@ from coverage.annotate import os
 from testfixtures import Replacer, compare, ShouldRaise, not_there
 
 from carthorse.cli import main
+from carthorse.when import never
 
 
 def test_run_through(dir):
@@ -21,10 +22,12 @@ def test_run_through(dir):
         ]
     }}}))
     with Replacer() as r:
-        r.replace('carthorse.version_from.dummy', m.version_from, strict=False)
+        r.replace('carthorse.plugins.Plugins.load', lambda *args: {
+            'version_from': {'dummy': m.version_from},
+            'when': {'dummy': m.when},
+            'actions': {'dummy': m.action},
+        })
         m.version_from.return_value = '1.2.3'
-        r.replace('carthorse.when.dummy', m.when, strict=False)
-        r.replace('carthorse.actions.dummy', m.action, strict=False)
         r.replace('sys.argv', ['x'])
         main()
     compare(m.mock_calls, expected=[
@@ -42,17 +45,19 @@ def test_when_stops(dir):
             {'name': 'dummy'},
         'when': [
             {'name': 'never'},
-            {'name': 'dummy2'},
+            {'name': 'dummy'},
         ],
         'actions': [
             {'name': 'dummy'},
         ]
     }}}))
     with Replacer() as r:
-        r.replace('carthorse.version_from.dummy', m.version_from, strict=False)
+        r.replace('carthorse.plugins.Plugins.load', lambda *args: {
+            'version_from': {'dummy': m.version_from},
+            'when': {'dummy': m.when, 'never': never},
+            'actions': {'dummy': m.action},
+        })
         m.version_from.return_value = '1.2.3'
-        r.replace('carthorse.when.dummy2', m.when2, strict=False)
-        r.replace('carthorse.actions.dummy', m.action, strict=False)
         r.replace('sys.argv', ['x'])
         main()
     compare(m.mock_calls, expected=[
@@ -72,18 +77,19 @@ def test_exception_during_action(dir):
         ]
     }}}))
     with Replacer() as r:
-        r.replace('carthorse.version_from.dummy', m.version_from, strict=False)
+        r.replace('carthorse.plugins.Plugins.load', lambda *args: {
+            'version_from': {'dummy': m.version_from},
+            'actions': {'dummy1': m.action1, 'dummy2': m.action2},
+        })
         m.version_from.return_value = '1.2.3'
-        r.replace('carthorse.actions.dummy1', m.when1, strict=False)
-        m.when1.side_effect = Exception('Boom!')
-        r.replace('carthorse.actions.dummy2', m.when2, strict=False)
+        m.action1.side_effect = Exception('Boom!')
         r.replace('sys.argv', ['x'])
         with ShouldRaise(Exception('Boom!')):
             main()
 
     compare(m.mock_calls, expected=[
         call.version_from(),
-        call.when1(),
+        call.action1(),
     ])
 
 
@@ -95,10 +101,12 @@ def check_tag_from_env(dir, config, expected):
     m = Mock()
     dir.write('pyproject.toml', toml.dumps(config))
     with Replacer() as r:
-        r.replace('carthorse.version_from.dummy', m.version_from, strict=False)
+        r.replace('carthorse.plugins.Plugins.load', lambda *args: {
+            'version_from': {'dummy': m.version_from},
+            'when': {'dummy': record_tag},
+            'actions': {'dummy': record_tag},
+        })
         m.version_from.return_value = '1.2.3'
-        r.replace('carthorse.when.dummy', record_tag, strict=False)
-        r.replace('carthorse.actions.dummy', record_tag, strict=False)
         r.replace('sys.argv', ['x'])
         r.replace('sys.environ.TAG', not_there, strict=False)
         main()

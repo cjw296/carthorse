@@ -4,4 +4,5 @@ dist
 .coverage
 .coverage.*
 coverage_output
+pip-wheel-metadata
 
