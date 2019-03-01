@@ -40,7 +40,7 @@ class Config(object):
         return self.data.get(item, default)
 
     def run(self, module, config):
-        func = getattr(module, config['name'].replace('-', '_'))
+        func = getattr(module, config['name'].replace('-', '_').replace('.', '_'))
         kw = config['kw'].copy()
         return func(*config['args'], **kw)
 

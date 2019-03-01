@@ -5,7 +5,7 @@ from textwrap import dedent
 from testfixtures import compare, Replace, ShouldRaise, Replacer
 
 from carthorse.actions import run, create_tag
-from carthorse.version_from import poetry
+from carthorse.version_from import poetry, setup_py
 from carthorse.when import never, version_not_tagged
 
 
@@ -17,6 +17,12 @@ class TestVersionFrom(object):
         version = "0.1.0"
         """))
         compare(poetry(), expected='0.1.0')
+
+    def test_setup_py(self, dir):
+        dir.write('setup.py', dedent("""
+        print('1.2.3')
+        """))
+        compare(setup_py(), expected='1.2.3')
 
 
 class TestWhenNever(object):

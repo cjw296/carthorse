@@ -1,4 +1,4 @@
-from textwrap import dedent
+from unittest.mock import Mock, call
 
 from testfixtures import compare
 
@@ -71,3 +71,15 @@ class TestConfig(object):
         from . import test_config
         result = config.run(test_config, config['version-from'])
         compare(result, expected=(1, 2, 3))
+
+    def test_dot_in_name(self, dir):
+        path = dir.write('test.toml', """
+        [tool.carthorse]
+        version-from = { name="a.func", a=1, b=2, c=3 }
+        when = []
+        actions = []
+        """)
+        config = load_config(path)
+        module = Mock()
+        config.run(module, config['version-from'])
+        compare(module.mock_calls, expected=[call.a_func(a=1, b=2, c=3)])
