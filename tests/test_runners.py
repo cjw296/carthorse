@@ -61,7 +61,8 @@ class TestWhenVersionNotTagged(object):
             compare(out, expected=(
                 '$ git remote -v\n'
                 '$ git rev-parse --verify -q v1.2.3\n'
-                + rev +'\n'
+                f'{rev}\n'
+                'Version is already tagged.\n'
             ))
             compare(err, expected='')
 
@@ -111,6 +112,7 @@ class TestWhenVersionNotTagged(object):
             "$ git fetch origin 'refs/tags/*:refs/tags/*'\n"
             '$ git rev-parse --verify -q v1.2.3\n'
             f'{rev}\n'
+            'Version is already tagged.\n'
         ))
 
 

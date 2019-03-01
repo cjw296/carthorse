@@ -22,6 +22,7 @@ def version_not_tagged(remote='origin'):
             return True
         raise
     else:
+        print('Version is already tagged.')
         return False
 
 
