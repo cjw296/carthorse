@@ -105,6 +105,13 @@ The following actions are currently available:
 Changes
 -------
 
+1.1.0 (1 Mar 2019)
+~~~~~~~~~~~~~~~~~~
+
+- Support extracting the project version from a ``setup.py``.
+
+- Support for other packages providing ``version-from``, ``when`` and ``actions`` callables.
+
 1.0.1 (27 Feb 2019)
 ~~~~~~~~~~~~~~~~~~~
 
