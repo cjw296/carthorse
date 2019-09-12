@@ -5,7 +5,7 @@ from textwrap import dedent
 from testfixtures import compare, Replace, ShouldRaise, Replacer
 
 from carthorse.actions import run, create_tag
-from carthorse.version_from import poetry, setup_py
+from carthorse.version_from import poetry, setup_py, flit, file
 from carthorse.when import never, version_not_tagged
 
 
@@ -23,6 +23,36 @@ class TestVersionFrom(object):
         print('1.2.3')
         """))
         compare(setup_py(), expected='1.2.3')
+
+    def test_file(self, dir):
+        dir.write('package/version.txt', '1.2.3\n')
+        compare(file('package/version.txt'), expected='1.2.3')
+
+    def test_file_pattern_doesnt_match(self, dir):
+        dir.write('package/version.txt', '1.2.3\n')
+        with ShouldRaise(ValueError(r'\d{2} not found in package/version.txt')):
+            file('package/version.txt', pattern=r'\d{2}')
+
+    def test_file_pattern_has_no_group(self, dir):
+        dir.write('package/version.txt', '1.2.3\n')
+        with ShouldRaise(ValueError(r"pattern \d has no group named 'version'")):
+            file('package/version.txt', pattern=r'\d')
+
+    def test_flit_module(self, dir):
+        dir.write('foobar.py', dedent('''
+        """An amazing sample package!"""
+
+        __version__ = '0.1'
+        '''))
+        compare(flit('foobar'), expected='0.1')
+
+    def test_flit_package(self, dir):
+        dir.write('foobar/__init__.py', dedent('''
+        """An amazing sample package!"""
+
+        __version__ = '0.1'
+        '''))
+        compare(flit('foobar'), expected='0.1')
 
 
 class TestWhenNever(object):
