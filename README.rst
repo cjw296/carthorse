@@ -61,9 +61,29 @@ Version extraction
 
 The following methods of extracting the version of a project are currently supported:
 
+``setup.py``
+  This will run ``python setup.py --version`` and use the version returned.
+
 ``poetry``
   This will parse a project's ``pyproject.toml`` and use the ``tool.poetry.version``
   key as the version for the project.
+
+``flit``
+  This will extract the version from a flit-style ``__version__`` without importing
+  the package. For example, if your module is called ``foobar``, this will look in either
+  ``foobar/__init__.py`` or ``foobar.py``. The config for that would be::
+
+    [tool.carthorse]
+    version-from = { name="flit", module="foobar" }
+
+``path``
+
+  This will extract the version from a specified file. By default, this will be the stripped
+  contents of the whole file, but a pattern can be specified. This can be useful to extract
+  the version from a ``setup.py`` without executing it. The config would that would be::
+
+    [tool.carthorse]
+    version-from = { name="path", path="setup.py", pattern="version='(?P<version>[^']+)" }
 
 Tag formatting
 --------------
@@ -104,6 +124,15 @@ The following actions are currently available:
 
 Changes
 -------
+
+1.2.0 (12 Sep 2020)
+~~~~~~~~~~~~~~~~~~~
+
+- Support extracting the project version from `flit`__-style project.
+
+  __ https://flit.readthedocs.io/en/latest/index.html
+
+- Support extracting the project version from a file, or part of a file by regex.
 
 1.1.0 (1 Mar 2019)
 ~~~~~~~~~~~~~~~~~~
