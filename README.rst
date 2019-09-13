@@ -124,7 +124,7 @@ The following actions are currently available:
 Changes
 -------
 
-1.2.0 (12 Sep 2020)
+1.2.0 (12 Sep 2019)
 ~~~~~~~~~~~~~~~~~~~
 
 - Support extracting the project version from `flit`__-style project.
