@@ -7,7 +7,8 @@ def run(command):
     check_call(command, shell=True)
 
 
-def create_tag(remote='origin'):
+def create_tag(remote='origin', update=False):
     tag = os.environ['TAG']
-    run('git tag '+tag)
-    run('git push {} tag {}'.format(remote, tag))
+    force = '--force ' if update else ''
+    run(f"git tag {force}{tag}")
+    run(f'git push {force}{remote} tag {tag}')

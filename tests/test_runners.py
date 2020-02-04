@@ -132,7 +132,6 @@ class TestWhenVersionNotTagged(object):
             with ShouldRaise(CalledProcessError):
                 version_not_tagged()
 
-
     def test_version_tagged_upstream(self, git, capfd):
         with Replace('os.environ.TAG', 'v1.2.3', strict=False):
             git.make_repo_with_content('remote')
@@ -195,4 +194,45 @@ class TestCreateTag(object):
 
             git.check_tags(repo='local', expected={b'v1.2.3': rev})
             git.check_tags(repo='remote', expected={b'v1.2.3': rev})
+        capfd.readouterr()
+
+    def test_exists_upstream(self, git, capfd):
+        with Replace('os.environ.TAG', 'v1.2.3', strict=False):
+            git.make_repo_with_content('remote')
+            rev = git.rev_parse('HEAD', 'remote')
+            git('clone remote local', git.dir.path)
+            git('tag v1.2.3', 'remote')
+            git.check_tags(repo='remote', expected={b'v1.2.3': rev})
+            os.chdir(git.dir.getpath('local'))
+            git.dir.write('local/a', 'changed')
+            git('config user.email "test@example.com"')
+            git('config user.name "Test User"')
+            git("commit -am changed")
+
+            with ShouldRaise(CalledProcessError) as s:
+                create_tag()
+
+            assert 'git push origin tag v1.2.3' in str(s.raised)
+            git.check_tags(repo='remote', expected={b'v1.2.3': rev})
+
+        capfd.readouterr()
+
+    def test_exists_but_update(self, git, capfd):
+        with Replace('os.environ.TAG', 'env-qa', strict=False):
+            git.make_repo_with_content('remote')
+            git('clone remote local', git.dir.path)
+            git('tag env-qa', 'remote')
+            git('tag env-qa')
+            os.chdir(git.dir.getpath('local'))
+            git.dir.write('local/a', 'changed')
+            git('config user.email "test@example.com"')
+            git('config user.name "Test User"')
+            git("commit -am changed")
+            rev = git.rev_parse('HEAD')
+
+            create_tag(update=True)
+
+            git.check_tags(repo='local', expected={b'env-qa': rev})
+            git.check_tags(repo='remote', expected={b'env-qa': rev})
+
         capfd.readouterr()

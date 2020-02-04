@@ -149,6 +149,15 @@ The following actions are currently available:
   This will create a git tag for the computed tag based on the extracted version and push
   it to the specified remote. By default, the ``origin`` remote is used.
 
+  If you are using carthorse to manage tags per environment, for example, you can for existing
+  tags to be updated as follows::
+
+    [tool.carthorse]
+    ...
+    actions = [
+       { name="create-tag", update=true},
+    ]
+
 Changes
 -------
 
