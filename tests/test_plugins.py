@@ -1,10 +1,20 @@
+from testfixtures import compare
+
 from carthorse.plugins import Plugins
 
 
 def test_load_plugins():
     plugins = Plugins.load()
-    assert isinstance(plugins, dict)
-    for name in 'version_from', 'when', 'actions':
-        types = plugins[name]
-        assert isinstance(types, dict)
-        assert len(types) > 0
+    actual = {}
+    for type_, type_plugins in plugins.items():
+        actual[type_] = plugin_names = []
+        for name, plugin in type_plugins.items():
+            assert callable(plugin)
+            plugin_names.append(name)
+        plugin_names.sort()
+
+    compare(actual, expected={
+        'version_from': ['file', 'flit', 'poetry', 'setup.py'],
+        'when': ['always', 'never', 'version-not-tagged'],
+        'actions': ['create-tag', 'run'],
+    })
