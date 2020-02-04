@@ -105,6 +105,9 @@ The following checks are currently available:
 ``never``
   A safety net and testing helper, this check will never pass.
 
+``always``
+ Useful if you basically want to skip the checking phase.
+
 Actions
 -------
 

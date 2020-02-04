@@ -6,7 +6,7 @@ from testfixtures import compare, Replace, ShouldRaise, Replacer
 
 from carthorse.actions import run, create_tag
 from carthorse.version_from import poetry, setup_py, flit, file
-from carthorse.when import never, version_not_tagged
+from carthorse.when import never, version_not_tagged, always
 
 
 class TestVersionFrom(object):
@@ -59,6 +59,12 @@ class TestWhenNever(object):
 
     def test_never(self):
         assert not never()
+
+
+class TestWhenAlways(object):
+
+    def test_always(self):
+        assert always()
 
 
 class TestWhenVersionNotTagged(object):

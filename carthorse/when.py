@@ -28,3 +28,7 @@ def version_not_tagged(remote='origin'):
 
 def never():
     pass
+
+
+def always():
+    return True

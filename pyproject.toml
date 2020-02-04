@@ -19,6 +19,7 @@ carthorse = "carthorse.cli:main"
 [tool.poetry.plugins."carthorse.when"]
 "version-not-tagged" = "carthorse.when:version_not_tagged"
 "never" = "carthorse.when:never"
+"always" = "carthorse.when:always"
 
 [tool.poetry.plugins."carthorse.actions"]
 "run" = "carthorse.actions:run"
