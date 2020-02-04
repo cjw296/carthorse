@@ -96,7 +96,7 @@ The following methods of extracting the version of a project are currently suppo
     version-from = { name="env"}
 
   If you need to extract it from an environment variable with a different name, for example
-  `$MYVERSION`, you could extract it with:
+  `$MYVERSION`, you could extract it with::
 
     [tool.carthorse]
     version-from = { name="env", variable="MYVERSION" }
