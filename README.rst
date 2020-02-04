@@ -161,6 +161,24 @@ The following actions are currently available:
 Changes
 -------
 
+1.3.0 (4 Feb 2020)
+~~~~~~~~~~~~~~~~~~
+
+Changes such that carthorse can cover the same use cases as `ansible-role-createtag`__ without
+needing ansible.
+
+__ https://github.com/cjw296/ansible-role-createtag
+
+- Added ``when`` of ``always``.
+
+- Added skipping of version extraction using ``none``.
+
+- Support extracting the project version from an environment variable.
+
+- Make the current datetime available when building the tag.
+
+- Add support for updating existing git tags.
+
 1.2.0 (12 Sep 2019)
 ~~~~~~~~~~~~~~~~~~~
 
