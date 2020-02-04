@@ -1,5 +1,6 @@
 import os
 from argparse import ArgumentParser
+from datetime import datetime
 
 from .config import load_config
 from .plugins import Plugins
@@ -17,7 +18,10 @@ def main():
     plugins = Plugins.load()
     version = config.run(plugins['version_from'], config['version-from'])
     tag_format = config.get('tag-format', 'v{version}')
-    os.environ['TAG'] = tag_format.format(version=version)
+    os.environ['TAG'] = tag_format.format(
+        now=datetime.now(),
+        version=version,
+    )
 
     ok = True
     for check in config['when']:

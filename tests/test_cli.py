@@ -2,7 +2,7 @@ from unittest.mock import Mock, call
 
 import toml
 from coverage.annotate import os
-from testfixtures import Replacer, compare, ShouldRaise, not_there
+from testfixtures import Replacer, compare, ShouldRaise, not_there, Replace, test_datetime
 
 from carthorse.cli import main
 from carthorse.when import never
@@ -150,3 +150,24 @@ def test_tag_format_specified(dir):
             'x-1.2.3-y',
             'x-1.2.3-y',
         ])
+
+
+def test_tag_includes_now(dir):
+    with Replace('carthorse.cli.datetime', test_datetime()):
+        check_tag_from_env(
+            dir,
+            config={'tool': {'carthorse': {
+                'version-from':
+                    {'name': 'dummy'},
+                'tag-format': 'release-{now:%Y-%m-%d}',
+                'when': [
+                    {'name': 'dummy'},
+                ],
+                'actions': [
+                    {'name': 'dummy'},
+                ]
+            }}},
+            expected=[
+                'release-2001-01-01',
+                'release-2001-01-01',
+            ])

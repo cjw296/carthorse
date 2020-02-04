@@ -108,6 +108,14 @@ The ``tag-format`` configuration option lets you control the format of the versi
 by specifying a python format string into which the version will be interpolated.
 The default is ``v{version}``.
 
+The names available to use in this are:
+
+``version``
+  The version returned by the version extraction.
+
+``now``
+  A python ``datetime`` for the current date and time.
+
 Performing checks
 -----------------
 
