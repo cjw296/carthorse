@@ -26,13 +26,13 @@ carthorse = "carthorse.cli:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-toml = "^0.10.0"
-pyyaml = "^3.13"
+toml = "*"
+pyyaml = "*"
 
 [tool.poetry.dev-dependencies]
-pytest = "^3.0"
-testfixtures = "^6.4"
-pytest-cov = "^2.6"
+pytest = "*"
+testfixtures = "*"
+pytest-cov = "*"
 
 [tool.carthorse]
 version-from = "poetry"
