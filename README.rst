@@ -84,6 +84,10 @@ The following methods of extracting the version of a project are currently suppo
     [tool.carthorse]
     version-from = { name="path", path="setup.py", pattern="version='(?P<version>[^']+)" }
 
+``none``
+  This will return an empty string as the version. This is useful if you're
+  using carthorse as a way of managing git tags or timestamped releases.
+
 Tag formatting
 --------------
 

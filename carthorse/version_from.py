@@ -34,3 +34,7 @@ def flit(module):
     else:
         path = str(path) + '.py'
     return file(path, pattern=r'__version__\s*=\s*[\'"](?P<version>[^"\']+)')
+
+
+def none():
+    return ''

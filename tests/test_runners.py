@@ -5,7 +5,7 @@ from textwrap import dedent
 from testfixtures import compare, Replace, ShouldRaise, Replacer
 
 from carthorse.actions import run, create_tag
-from carthorse.version_from import poetry, setup_py, flit, file
+from carthorse.version_from import poetry, setup_py, flit, file, none
 from carthorse.when import never, version_not_tagged, always
 
 
@@ -53,6 +53,9 @@ class TestVersionFrom(object):
         __version__ = '0.1'
         '''))
         compare(flit('foobar'), expected='0.1')
+
+    def test_none(self, dir):
+        compare(none(), expected='')
 
 
 class TestWhenNever(object):
