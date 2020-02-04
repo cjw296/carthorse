@@ -5,7 +5,7 @@ from textwrap import dedent
 from testfixtures import compare, Replace, ShouldRaise, Replacer
 
 from carthorse.actions import run, create_tag
-from carthorse.version_from import poetry, setup_py, flit, file, none
+from carthorse.version_from import poetry, setup_py, flit, file, none, env
 from carthorse.when import never, version_not_tagged, always
 
 
@@ -56,6 +56,14 @@ class TestVersionFrom(object):
 
     def test_none(self, dir):
         compare(none(), expected='')
+
+    def test_env_default(self):
+        with Replace('os.environ.VERSION', '1.2.3', strict=False):
+            compare(env(), expected='1.2.3')
+
+    def test_env_explicit_variable(self):
+        with Replace('os.environ.MYVERSION', '1.2.3', strict=False):
+            compare(env(variable='MYVERSION'), expected='1.2.3')
 
 
 class TestWhenNever(object):

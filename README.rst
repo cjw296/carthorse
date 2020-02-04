@@ -88,6 +88,19 @@ The following methods of extracting the version of a project are currently suppo
   This will return an empty string as the version. This is useful if you're
   using carthorse as a way of managing git tags or timestamped releases.
 
+``env``
+  This will extract the version from the specified environment variable. For example,
+  if you have constructed the version in `$VERSION` you could extract it with::
+
+    [tool.carthorse]
+    version-from = { name="env"}
+
+  If you need to extract it from an environment variable with a different name, for example
+  `$MYVERSION`, you could extract it with:
+
+    [tool.carthorse]
+    version-from = { name="env", variable="MYVERSION" }
+
 Tag formatting
 --------------
 

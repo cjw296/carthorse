@@ -16,6 +16,7 @@ carthorse = "carthorse.cli:main"
 "file" = "carthorse.version_from:file"
 "flit" = "carthorse.version_from:flit"
 "none" = "carthorse.version_from:none"
+"env" = "carthorse.version_from:env"
 
 [tool.poetry.plugins."carthorse.when"]
 "version-not-tagged" = "carthorse.when:version_not_tagged"

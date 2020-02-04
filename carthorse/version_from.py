@@ -1,3 +1,4 @@
+import os
 import re
 from pathlib import Path
 from subprocess import check_output
@@ -38,3 +39,7 @@ def flit(module):
 
 def none():
     return ''
+
+
+def env(variable='VERSION'):
+    return os.environ[variable]

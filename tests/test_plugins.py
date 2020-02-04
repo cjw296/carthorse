@@ -14,7 +14,7 @@ def test_load_plugins():
         plugin_names.sort()
 
     compare(actual, expected={
-        'version_from': ['file', 'flit', 'none', 'poetry', 'setup.py'],
+        'version_from': ['env', 'file', 'flit', 'none', 'poetry', 'setup.py'],
         'when': ['always', 'never', 'version-not-tagged'],
         'actions': ['create-tag', 'run'],
     })
