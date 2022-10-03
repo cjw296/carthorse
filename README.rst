@@ -9,7 +9,9 @@ Carthorse
 Safely creating releases when you change the version number.
 
 You use it by adding configuration to a yaml or toml file, and then adding the following
-to your continuous integration pipeline::
+to your continuous integration pipeline:
+
+.. code-block:: bash
 
     pip install -U carthorse
     carthorse
@@ -17,7 +19,9 @@ to your continuous integration pipeline::
 TOML Configuration
 ------------------
 
-Your file should contain a section such as the following::
+Your file should contain a section such as the following:
+
+.. code-block:: toml
 
     [tool.carthorse]
     version-from = "poetry"
@@ -35,7 +39,9 @@ This is designed so that it can be included as part of a ``pyproject.toml`` file
 YAML Configuration
 ------------------
 
-Your file should contain a section such as the following::
+Your file should contain a section such as the following:
+
+.. code-block:: yaml
 
     carthorse:
       version-from: poetry
@@ -71,7 +77,9 @@ The following methods of extracting the version of a project are currently suppo
 ``flit``
   This will extract the version from a flit-style ``__version__`` without importing
   the package. For example, if your module is called ``foobar``, this will look in either
-  ``foobar/__init__.py`` or ``foobar.py``. The config for that would be::
+  ``foobar/__init__.py`` or ``foobar.py``. The config for that would be:
+
+  .. code-block:: toml
 
     [tool.carthorse]
     version-from = { name="flit", module="foobar" }
@@ -79,7 +87,9 @@ The following methods of extracting the version of a project are currently suppo
 ``path``
   This will extract the version from a specified file. By default, this will be the stripped
   contents of the whole file, but a pattern can be specified. This can be useful to extract
-  the version from a ``setup.py`` without executing it. The config would that would be::
+  the version from a ``setup.py`` without executing it. The config would that would be:
+
+  .. code-block:: toml
 
     [tool.carthorse]
     version-from = { name="path", path="setup.py", pattern="version='(?P<version>[^']+)" }
@@ -90,13 +100,17 @@ The following methods of extracting the version of a project are currently suppo
 
 ``env``
   This will extract the version from the specified environment variable. For example,
-  if you have constructed the version in `$VERSION` you could extract it with::
+  if you have constructed the version in `$VERSION` you could extract it with:
+
+  .. code-block:: toml
 
     [tool.carthorse]
     version-from = { name="env"}
 
   If you need to extract it from an environment variable with a different name, for example
-  `$MYVERSION`, you could extract it with::
+  `$MYVERSION`, you could extract it with:
+
+  .. code-block:: toml
 
     [tool.carthorse]
     version-from = { name="env", variable="MYVERSION" }
@@ -150,7 +164,9 @@ The following actions are currently available:
   it to the specified remote. By default, the ``origin`` remote is used.
 
   If you are using carthorse to manage tags per environment, for example, you can for existing
-  tags to be updated as follows::
+  tags to be updated as follows:
+
+  .. code-block:: toml
 
     [tool.carthorse]
     ...
