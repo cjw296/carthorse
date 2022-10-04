@@ -2,7 +2,8 @@ from unittest.mock import Mock, call
 
 import toml
 from coverage.annotate import os
-from testfixtures import Replacer, compare, ShouldRaise, not_there, Replace, test_datetime
+from testfixtures import Replacer, compare, ShouldRaise, not_there, Replace, test_datetime, \
+    OutputCapture
 
 from carthorse.cli import main
 from carthorse.when import never
@@ -171,3 +172,39 @@ def test_tag_includes_now(dir):
                 'release-2001-01-01',
                 'release-2001-01-01',
             ])
+
+
+def test_dry_run(dir):
+    dir.write('pyproject.toml', toml.dumps(
+        {
+            'tool': {
+                'carthorse': {
+                    'version-from':
+                        {'name': 'poetry'},
+                    'when': [
+                        {'name': 'always'},
+                    ],
+                    'actions': [
+                        {'run': 'echo $TAG'},
+                        {'name': 'create-tag'},
+                    ]
+                },
+                'poetry': {
+                    'version': '1.0',
+                },
+            }
+        }
+    ))
+
+    def raiser(*args, **kw):  # pragma: no cover
+        raise Exception('Boom!')
+
+    with Replacer() as replace, OutputCapture() as output:
+        replace('carthorse.actions.check_call', raiser)
+        replace('sys.argv', ['x', '--dry-run'])
+        main()
+    output.compare(
+        '$ echo $TAG\n'
+        '$ git tag v1.0\n'
+        '$ git push origin tag v1.0\n'
+    )
