@@ -110,7 +110,7 @@ The following methods of extracting the version of a project are currently suppo
   .. code-block:: toml
 
     [tool.carthorse]
-    version-from = { name="file", path="setup.py", pattern="version='(?P<version>[^']+)" }
+    version-from = { name="file", path="setup.py", pattern="version=['\"](?P<version>[^'\"]+)" }
 
   .. invisible-code-block: python
 
