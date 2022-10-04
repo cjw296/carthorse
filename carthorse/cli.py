@@ -16,19 +16,21 @@ def main():
     args = parse_args()
     config = load_config(args.config)
     plugins = Plugins.load()
+    carthorse(config, plugins)
+
+
+def carthorse(config, plugins):
     version = config.run(plugins['version_from'], config['version-from'])
     tag_format = config.get('tag-format', 'v{version}')
     os.environ['TAG'] = tag_format.format(
         now=datetime.now(),
         version=version,
     )
-
     ok = True
     for check in config['when']:
         ok = config.run(plugins['when'], check)
         if not ok:
             break
-
     if ok:
         for action in config['actions']:
             config.run(plugins['actions'], action)

@@ -36,6 +36,7 @@ pyyaml = "*"
 pytest = "*"
 testfixtures = "*"
 pytest-cov = "*"
+sybil = "^3.0.1"
 
 [tool.carthorse]
 version-from = "poetry"
