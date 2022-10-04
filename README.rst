@@ -102,7 +102,7 @@ The following methods of extracting the version of a project are currently suppo
 
       run_config(expected_runs=['echo v2.0'])
 
-``path``
+``file``
   This will extract the version from a specified file. By default, this will be the stripped
   contents of the whole file, but a pattern can be specified. This can be useful to extract
   the version from a ``setup.py`` without executing it. The config would that would be:
@@ -110,7 +110,7 @@ The following methods of extracting the version of a project are currently suppo
   .. code-block:: toml
 
     [tool.carthorse]
-    version-from = { name="path", path="setup.py", pattern="version='(?P<version>[^']+)" }
+    version-from = { name="file", path="setup.py", pattern="version='(?P<version>[^']+)" }
 
   .. invisible-code-block: python
 
