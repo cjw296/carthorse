@@ -44,7 +44,7 @@ when = [
   "version-not-tagged"
 ]
 actions = [
-   { run="poetry publish --username chrisw --password $POETRY_PASS --build"},
+   { run="poetry publish --build"},
    { name="create-tag"},
 ]
 

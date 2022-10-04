@@ -30,14 +30,14 @@ Your file should contain a section such as the following:
       "version-not-tagged"
     ]
     actions = [
-       { run="poetry publish --username $POETRY_USER --password $POETRY_PASS --build"},
+       { run="poetry publish --build"},
        { name="create-tag"},
     ]
 
 .. invisible-code-block: python
 
     run_config(
-        expected_runs=['poetry publish --username  --password  --build'],
+        expected_runs=['poetry publish --build'],
         expected_phrases=['git push origin tag v1.0']
     )
 
@@ -56,13 +56,13 @@ Your file should contain a section such as the following:
       when:
         - version-not-tagged
       actions:
-        - run: "poetry publish --username $POETRY_USER --password $POETRY_PASS --build"
+        - run: "poetry publish --build"
         - create-tag
 
 .. invisible-code-block: python
 
     run_config(
-        expected_runs=['poetry publish --username  --password  --build'],
+        expected_runs=['poetry publish --build'],
         expected_phrases=['git push origin tag v1.0']
     )
 
