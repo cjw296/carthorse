@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  python: cjw296/python-ci@1
+  python: cjw296/python-ci@3.1
 
 jobs:
   release:
     docker:
-      - image: circleci/python:3.7
+      - image: cimg/python:3.10
     steps:
       - checkout
       - run:
@@ -20,14 +20,16 @@ common: &common
   jobs:
 
     - python/poetry-run-tests:
-        name: python37
-        image: circleci/python:3.7
+        matrix:
+          parameters:
+            image:
+              - cimg/python:3.10
         command: poetry run pytest --cov carthorse --cov tests
 
     - python/coverage:
         name: coverage
         requires:
-          - python37
+          - python/poetry-run-tests
 
     - release:
         requires:
