@@ -105,7 +105,7 @@ The following methods of extracting the version of a project are currently suppo
 ``file``
   This will extract the version from a specified file. By default, this will be the stripped
   contents of the whole file, but a pattern can be specified. This can be useful to extract
-  the version from a ``setup.py`` without executing it. The config would that would be:
+  the version from a ``setup.py`` without executing it. The config for that would be:
 
   .. code-block:: toml
 
