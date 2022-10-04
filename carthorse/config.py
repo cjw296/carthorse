@@ -1,6 +1,7 @@
 from functools import reduce
 from operator import __getitem__
 from os.path import splitext
+from typing import Callable, TextIO, Dict, Sequence, cast
 
 from yaml import safe_load as parse_yaml
 from toml import load as parse_toml
@@ -8,10 +9,13 @@ from toml import load as parse_toml
 
 class Config(object):
 
-    def __init__(self, path):
+    root_key: Sequence[str]
+    parse: Callable[[TextIO], Dict]
+
+    def __init__(self, path: str):
         with open(path) as source:
             data = self.parse(source)
-        self.data = reduce(__getitem__, self.root_key, data)
+        self.data = cast(Dict, reduce(__getitem__, self.root_key, data))
         self.data['version-from'] = self.expand(self.data['version-from'])
         for name in 'when', 'actions':
             self.data[name] = [self.expand(item) for item in self.data[name]]

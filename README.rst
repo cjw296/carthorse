@@ -34,6 +34,13 @@ Your file should contain a section such as the following:
        { name="create-tag"},
     ]
 
+.. invisible-code-block: python
+
+    run_config(
+        expected_runs=['poetry publish --username  --password  --build'],
+        expected_phrases=['git push origin tag v1.0']
+    )
+
 This is designed so that it can be included as part of a ``pyproject.toml`` file.
 
 YAML Configuration
@@ -51,6 +58,13 @@ Your file should contain a section such as the following:
       actions:
         - run: "poetry publish --username $POETRY_USER --password $POETRY_PASS --build"
         - create-tag
+
+.. invisible-code-block: python
+
+    run_config(
+        expected_runs=['poetry publish --username  --password  --build'],
+        expected_phrases=['git push origin tag v1.0']
+    )
 
 What does it do?
 ----------------
@@ -84,6 +98,10 @@ The following methods of extracting the version of a project are currently suppo
     [tool.carthorse]
     version-from = { name="flit", module="foobar" }
 
+  .. invisible-code-block: python
+
+      run_config(expected_runs=['echo v2.0'])
+
 ``path``
   This will extract the version from a specified file. By default, this will be the stripped
   contents of the whole file, but a pattern can be specified. This can be useful to extract
@@ -93,6 +111,10 @@ The following methods of extracting the version of a project are currently suppo
 
     [tool.carthorse]
     version-from = { name="path", path="setup.py", pattern="version='(?P<version>[^']+)" }
+
+  .. invisible-code-block: python
+
+      run_config(expected_runs=['echo v3.0'])
 
 ``none``
   This will return an empty string as the version. This is useful if you're
@@ -105,7 +127,11 @@ The following methods of extracting the version of a project are currently suppo
   .. code-block:: toml
 
     [tool.carthorse]
-    version-from = { name="env"}
+    version-from = { name="env" }
+
+  .. invisible-code-block: python
+
+      run_config(expected_runs=['echo v4.0'])
 
   If you need to extract it from an environment variable with a different name, for example
   `$MYVERSION`, you could extract it with:
@@ -114,6 +140,10 @@ The following methods of extracting the version of a project are currently suppo
 
     [tool.carthorse]
     version-from = { name="env", variable="MYVERSION" }
+
+  .. invisible-code-block: python
+
+      run_config(expected_runs=['echo v5.0'])
 
 Tag formatting
 --------------
@@ -169,10 +199,13 @@ The following actions are currently available:
   .. code-block:: toml
 
     [tool.carthorse]
-    ...
     actions = [
        { name="create-tag", update=true},
     ]
+
+  .. invisible-code-block: python
+
+      run_config(expected_phrases=['git push --force origin tag v4.0'])
 
 Changes
 -------
