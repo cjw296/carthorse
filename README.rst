@@ -210,6 +210,13 @@ The following actions are currently available:
 Changes
 -------
 
+1.4.0 (4 Oct 2022)
+~~~~~~~~~~~~~~~~~~
+
+- Fix documentation bugs.
+
+- Implement ``carthorse --dry-run``.
+
 1.3.0 (4 Feb 2020)
 ~~~~~~~~~~~~~~~~~~
 
