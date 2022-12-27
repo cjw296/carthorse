@@ -6,7 +6,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/python:3.11
     steps:
       - checkout
       - run:
@@ -23,7 +23,8 @@ common: &common
         matrix:
           parameters:
             image:
-              - cimg/python:3.10
+              - cimg/python:3.6
+              - cimg/python:3.11
         command: pytest --cov carthorse --cov tests
 
     - python/coverage:
