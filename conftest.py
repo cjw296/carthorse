@@ -10,8 +10,7 @@ from typing import Dict, Callable, cast, Sequence, Match
 
 import pytest
 from sybil import Sybil, Example
-from sybil.parsers.codeblock import PythonCodeBlockParser, CodeBlockParser
-from sybil.parsers.doctest import DocTestParser
+from sybil.parsers.rest import PythonCodeBlockParser, CodeBlockParser, DocTestParser
 from testfixtures import TempDirectory, compare, Replace, OutputCapture
 from toml import loads as parse_toml, dumps as serialize_toml
 from yaml import safe_load as parse_yaml
