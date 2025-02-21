@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from pkg_resources import iter_entry_points
+from importlib.metadata import entry_points
 
 
 class Plugins(defaultdict):
@@ -12,7 +12,7 @@ class Plugins(defaultdict):
         """
         plugins = Plugins(dict)
         for type in 'version_from', 'when', 'actions':
-            for entrypoint in iter_entry_points(group='carthorse.'+type):
+            for entrypoint in entry_points(group='carthorse.'+type):
                 plugin = entrypoint.load()
                 plugins[type][entrypoint.name] = plugin
         return plugins
