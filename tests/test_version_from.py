@@ -39,6 +39,11 @@ def test_file_pattern_has_no_group(dir):
     with ShouldRaise(ValueError(r"pattern \d has no group named 'version'")):
         file('package/version.txt', pattern=r'\d')
 
+def test_file_multiple_matches(dir):
+    # nb: stops on first match, so they need to be in order:
+    dir.write('package/changelog.txt', '1.2.3\n1.2.2\n2.0.0\n')
+    compare(file('package/changelog.txt'), expected='1.2.3')
+
 def test_flit_module(dir):
     dir.write('foobar.py', dedent('''
     """An amazing sample package!"""

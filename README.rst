@@ -124,6 +124,18 @@ The following methods of extracting the version of a project are currently suppo
 
       run_config(expected_runs=['echo v3.0'])
 
+  This extracts only the first version it encounters in a file, so it can also be used for
+  extracting the version from a ``CHANGELOG``:
+
+  .. code-block:: toml
+
+    [tool.carthorse]
+    version-from = { name="file", path="CHANGELOG.md", pattern='## (?P<version>\d+\.\d+\.\d+)' }
+
+  .. invisible-code-block: python
+
+      run_config(expected_runs=['echo v3.0.0'])
+
 ``none``
   This will return an empty string as the version. This is useful if you're
   using carthorse as a way of managing git tags or timestamped releases.
