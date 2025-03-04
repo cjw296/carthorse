@@ -2,8 +2,15 @@ from textwrap import dedent
 
 from testfixtures import compare, ShouldRaise, Replace
 
-from carthorse.version_from import poetry, setup_py, file, flit, none, env
+from carthorse.version_from import poetry, setup_py, file, flit, none, env, pyproject
 
+
+def test_pyproject(dir):
+    dir.write('pyproject.toml', dedent("""
+    [project]
+    version = "0.0.0.dev1"
+    """))
+    compare(pyproject(), expected='0.0.0.dev1')
 
 def test_poetry(dir):
     dir.write('pyproject.toml', dedent("""

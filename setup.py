@@ -42,6 +42,7 @@ setup(
         ],
         "carthorse.version_from": [
             "poetry = carthorse.version_from:poetry",
+            "pyproject = carthorse.version_from:pyproject",
             "setup.py = carthorse.version_from:setup_py",
             "file = carthorse.version_from:file",
             "flit = carthorse.version_from:flit",

@@ -6,6 +6,12 @@ from subprocess import check_output
 import toml
 
 
+def pyproject():
+    with open('pyproject.toml') as source:
+        data = toml.load(source)
+        return data['project']['version']
+
+
 def poetry():
     with open('pyproject.toml') as source:
         data = toml.load(source)
