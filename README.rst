@@ -83,6 +83,12 @@ Version extraction
 
 The following methods of extracting the version of a project are currently supported:
 
+``pyproject.toml``
+  This will parse a project's ``pyproject.toml`` and use the standard `version`__
+  key as the version for the project.
+
+  __  https://packaging.python.org/en/latest/specifications/pyproject-toml/#version
+
 ``setup.py``
   This will run ``python setup.py --version`` and use the version returned.
 
