@@ -8,6 +8,10 @@ Carthorse
 
 Safely creating releases when you change the version number.
 
+The intention is to only create the release tag when the release is good to go.
+No more brown bag releases, where a tag is cut only to find there's a continuous integration
+or build failure that means you immediately need to cut another tag.
+
 You use it by adding configuration to a yaml or toml file, and then adding the following
 to your continuous integration pipeline:
 
@@ -15,6 +19,14 @@ to your continuous integration pipeline:
 
     pip install -U carthorse
     carthorse
+
+What does it do?
+----------------
+
+- Extract your project's version from its source code.
+- Format a tag based on the version.
+- Perform a number of checks, if any of those fail, stop.
+- Perform any actions you specify, which usually includes creating and pushing the version tag.
 
 TOML Configuration
 ------------------
@@ -65,16 +77,6 @@ Your file should contain a section such as the following:
         expected_runs=['poetry publish --build'],
         expected_phrases=['git push origin tag v1.0']
     )
-
-What does it do?
-----------------
-
-Roughly speaking:
-
-- Extract your project's version from its source code.
-- Format a tag based on the version
-- Perform a number of checks, if any of those fail, stop.
-- Perform any actions you specify.
 
 Version extraction
 ------------------
