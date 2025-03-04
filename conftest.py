@@ -80,6 +80,7 @@ def repo(git: GitHelper) -> Path:
     (repo / 'pyproject.toml').write_text(serialize_toml({'tool': {'poetry': {'version': '1.0'}}}))
     (repo / 'foobar.py').write_text('__version__="2.0"\n')
     (repo / 'setup.py').write_text('version="3.0"\n')
+    (repo / 'CHANGELOG.md').write_text('## 3.0.0\n')
     os.chdir(repo)
     return repo
 
