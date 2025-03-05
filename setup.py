@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='carthorse',
-    version="1.4.0",
+    version="2.0.0",
     author='Chris Withers',
     author_email='chris@withers.org',
     license='MIT',

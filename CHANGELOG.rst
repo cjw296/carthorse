@@ -1,6 +1,17 @@
 Changes
 =======
 
+2.0.0 (5 Mar 2025)
+~~~~~~~~~~~~~~~~~~
+
+- Officially support Python 3.12 and Python 3.13
+
+- Drop support for Python 3.11 and earlier.
+
+- Add ``pyproject`` as a ``version-from``.
+
+- Add ``update-major-tag`` action.
+
 1.4.0 (4 Oct 2022)
 ~~~~~~~~~~~~~~~~~~
 
