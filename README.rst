@@ -226,3 +226,28 @@ The following actions are currently available:
   .. invisible-code-block: python
 
       run_config(expected_phrases=['git push --force origin tag v4.0'])
+
+``update_major_tag``
+  This will create or update a major version tag based on the extracted version and force-push
+  it to the specified remote. By default, the ``origin`` remote is used.
+
+  The major version is extracted from tag computed using the ``tag-format`` using a
+  `regular expression`__.
+
+  __ https://docs.python.org/3/library/re.html
+
+  By default, the pattern used is ``'v[0-9]+'``, but this can be configured.
+
+  Here's how you could use a different pattern and push to a different remote:
+
+  .. code-block:: toml
+
+    [tool.carthorse]
+    actions = [
+       { name="update-major-tag", pattern='v\d\.\d', remote='upstream'},
+    ]
+
+  .. invisible-code-block: python
+
+      run_config(expected_phrases=['git push --force upstream tag v4.0'])
+
