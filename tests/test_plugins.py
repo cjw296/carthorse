@@ -16,5 +16,5 @@ def test_load_plugins():
     compare(actual, expected={
         'version_from': ['env', 'file', 'flit', 'none', 'poetry', 'pyproject', 'setup.py'],
         'when': ['always', 'never', 'version-not-tagged'],
-        'actions': ['create-tag', 'run'],
+        'actions': ['create-tag', 'run', 'update-major-tag'],
     })

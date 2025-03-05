@@ -57,6 +57,7 @@ setup(
         "carthorse.actions": [
             "run = carthorse.actions:run",
             "create-tag = carthorse.actions:create_tag",
+            "update-major-tag = carthorse.actions:update_major_tag",
         ],
     },
 )

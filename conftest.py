@@ -77,6 +77,8 @@ def repo(git: GitHelper) -> Path:
     git.make_repo_with_content('remote')
     git('clone remote local', git.dir.path)
     repo = git.dir.as_path('local')
+    remote = git.dir.as_path('remote')
+    git(f'remote add upstream {remote}')
     (repo / 'pyproject.toml').write_text(serialize_toml({'tool': {'poetry': {'version': '1.0'}}}))
     (repo / 'foobar.py').write_text('__version__="2.0"\n')
     (repo / 'setup.py').write_text('version="3.0"\n')
