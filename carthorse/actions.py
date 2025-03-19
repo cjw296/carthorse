@@ -5,7 +5,7 @@ from subprocess import check_output
 
 def run(command):
     print('$ '+command)
-    output = check_output(command, shell=True).decode('ascii').strip()
+    output = check_output(command, shell=True).decode().strip()
     if output:
         print(output)
     return output

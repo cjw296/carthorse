@@ -22,6 +22,16 @@ class TestRun(object):
             run('/dev/null')
         capfd.readouterr()
 
+    def test_non_ascii_output(self, capfd):
+        run('echo "100% ━━━━━━━━━ 20.5/20.5 kB • 00:00 • 26.5 MB/s"')
+        compare(
+            capfd.readouterr().out,
+            expected=(
+                '$ echo "100% ━━━━━━━━━ 20.5/20.5 kB • 00:00 • 26.5 MB/s"\n'
+                '100% ━━━━━━━━━ 20.5/20.5 kB • 00:00 • 26.5 MB/s\n'
+            ),
+        )
+
 
 class TestCreateTag(object):
 
