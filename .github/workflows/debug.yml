@@ -1,0 +1,49 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - run: |
+          python -c 'import os; print("print to stdout", os.environ.get("GITHUB_SHA"))'
+        shell: bash
+
+      - run: |
+          python -c 'import os, sys; print("print to stderr", os.environ.get("GITHUB_SHA"), file=sys.stderr)'
+        shell: bash
+
+      - run: |
+          python -c 'import os, subprocess; os.environ["FOO"]="bar"; subprocess.check_call("echo hai:$FOO:", shell=True)'
+        shell: bash
+
+      - name: Install carthorse
+        run: pip install .
+        shell: bash
+
+      - name: Write .carthorse.yaml
+        shell: bash
+        run: |
+          cat > .carthorse.yaml << 'EOL'
+          carthorse:
+            version-from: pyproject
+            when:
+              - version-not-tagged
+            actions:
+              - run: 'echo hai'
+              - run: 'echo :$TAG:${TAG}'
+          EOL
+
+      - name: Run carthorse
+        id: carthorse
+        run: carthorse --config .carthorse.yaml
+        shell: bash
+
+      - name: Show output of carthorse
+        run: echo "${{toJson(steps.carthorse.outputs)}}"
+        shell: bash

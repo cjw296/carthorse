@@ -1,0 +1,6 @@
+  carthorse:
+    version-from: setup.py
+    when:
+      - always
+    actions:
+      - run: 'echo $TAG'
