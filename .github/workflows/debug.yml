@@ -1,5 +1,4 @@
 on:
-  push:
   pull_request:
 
 jobs:
@@ -34,9 +33,9 @@ jobs:
         run: |
           cat > .carthorse.yaml << 'EOL'
           carthorse:
-            version-from: pyproject
+            version-from: setup.py
             when:
-              - version-not-tagged
+              - always
             actions:
               - run: 'echo hai'
               - run: 'echo :$TAG:${TAG}'
