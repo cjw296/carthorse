@@ -1,6 +1,11 @@
 Changes
 =======
 
+2.0.1 (19 Mar 2025)
+~~~~~~~~~~~~~~~~~~~
+
+- Fix confusing output ordering issue when using the ``run`` action.
+
 2.0.0 (5 Mar 2025)
 ~~~~~~~~~~~~~~~~~~
 
