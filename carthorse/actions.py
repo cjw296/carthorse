@@ -4,7 +4,7 @@ from subprocess import check_call
 
 
 def run(command):
-    print('$ '+command)
+    print('$ '+command, flush=True)
     check_call(command, shell=True)
 
 
