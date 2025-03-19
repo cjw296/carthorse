@@ -18,12 +18,10 @@ def main():
     args = parse_args()
     config = load_config(args.config)
     plugins = Plugins.load()
-    if args.dry_run:
-        actions.check_call = lambda *_, **__: None
-    carthorse(config, plugins)
+    carthorse(config, plugins, args.dry_run)
 
 
-def carthorse(config, plugins):
+def carthorse(config, plugins, dry_run):
     version = config.run(plugins['version_from'], config['version-from'])
     tag_format = config.get('tag-format', 'v{version}')
     os.environ['TAG'] = tag_format.format(
@@ -36,5 +34,7 @@ def carthorse(config, plugins):
         if not ok:
             break
     if ok:
+        if dry_run:
+            actions.check_output = lambda *_, **__: b''
         for action in config['actions']:
             config.run(plugins['actions'], action)

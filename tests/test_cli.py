@@ -200,7 +200,7 @@ def test_dry_run(dir):
         raise Exception('Boom!')
 
     with Replacer() as replace, OutputCapture() as output:
-        replace('carthorse.actions.check_call', raiser)
+        replace('carthorse.actions.check_output', raiser)
         replace('sys.argv', ['x', '--dry-run'])
         main()
     output.compare(

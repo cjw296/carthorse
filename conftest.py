@@ -115,7 +115,7 @@ def run_config(
     plugins = Plugins.load()
     plugins['actions']['run'] = run
     with Replace('os.environ', environ), OutputCapture(fd=True) as output:
-        carthorse(config, plugins)
+        carthorse(config, plugins, dry_run=False)
     compare(actual, expected=expected_runs)
     assert not isinstance(expected_phrases, str)
     for phrase in expected_phrases:

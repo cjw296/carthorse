@@ -1,11 +1,14 @@
 import os
 import re
-from subprocess import check_call
+from subprocess import check_output
 
 
 def run(command):
     print('$ '+command)
-    check_call(command, shell=True)
+    output = check_output(command, shell=True).decode('ascii').strip()
+    if output:
+        print(output)
+    return output
 
 
 def create_tag(remote='origin', update=False):
