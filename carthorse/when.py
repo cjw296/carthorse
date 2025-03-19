@@ -1,13 +1,7 @@
 import os
-from subprocess import CalledProcessError, check_output
+from subprocess import CalledProcessError
 
-
-def run(command):
-    print('$ '+command)
-    output = check_output(command, shell=True).decode('ascii').strip()
-    if output:
-        print(output)
-    return output
+from .actions import run
 
 
 def version_not_tagged(remote='origin'):
