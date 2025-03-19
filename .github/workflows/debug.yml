@@ -22,6 +22,9 @@ jobs:
           python -c 'import os, subprocess; os.environ["FOO"]="bar"; subprocess.check_call("echo hai:$FOO:", shell=True)'
         shell: bash
 
+      - name: Checkout the commit for which CI ran
+        uses: actions/checkout@v4
+
       - name: Install carthorse
         run: pip install .
         shell: bash
