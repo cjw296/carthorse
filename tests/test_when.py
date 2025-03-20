@@ -4,6 +4,7 @@ from subprocess import CalledProcessError
 from testfixtures import Replace, compare, ShouldRaise, Replacer
 
 from carthorse.when import never, always, version_not_tagged
+from conftest import GitHelper
 
 
 class TestNever(object):
@@ -59,9 +60,17 @@ class TestVersionNotTagged(object):
             with ShouldRaise(SystemExit):
                 version_not_tagged()
         out, err = capfd.readouterr()
-        compare(out, expected='$ git remote -v\nreturncode=128\n')
+        compare(
+            out,
+            expected=(
+                '$ git remote -v\n'
+                'returncode=128\n'
+                'fatal: not a git repository (or any of the parent directories): .git\n'
+                ''
+            ),
+        )
         compare(err.lower(),
-                expected='fatal: not a git repository (or any of the parent directories): .git\n')
+                expected='')
 
     def test_rev_parse_blows_up(self, dir):
         exception = SystemExit(42)
@@ -74,7 +83,7 @@ class TestVersionNotTagged(object):
             with ShouldRaise(exception):
                 version_not_tagged()
 
-    def test_version_tagged_upstream(self, git, capfd):
+    def test_version_tagged_upstream(self, git: GitHelper, capfd):
         with Replace('os.environ.TAG', 'v1.2.3', strict=False):
             git.make_repo_with_content('remote')
             rev = git.rev_parse('HEAD', 'remote')
@@ -94,10 +103,13 @@ class TestVersionNotTagged(object):
             git.check_tags(repo='remote', expected={b'v1.2.3': rev})
 
         out, _ = capfd.readouterr()
+        remote = git.dir.as_path('remote').resolve()
         compare(out, expected=(
             '$ git remote -v\n'
             f"{git('remote -v').decode('ascii')}"
             "$ git fetch origin 'refs/tags/*:refs/tags/*'\n"
+            f"From {remote}\n"
+            f" * [new tag]         v1.2.3     -> v1.2.3\n"
             '$ git rev-parse --verify -q v1.2.3\n'
             f'{rev}\n'
             'Version is already tagged.\n'

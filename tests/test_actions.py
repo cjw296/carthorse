@@ -25,18 +25,20 @@ class TestRun(object):
             expected=(
                 '$ /dev/null\n'
                 'returncode=126\n'
+                '/bin/sh: /dev/null: Permission denied\n'
             ),
         )
 
     def test_failure_with_output(self, capfd):
         with ShouldRaise(SystemExit(32)):
-            run('echo "some stuff" && exit 32')
+            run('echo "stdout" >&1 && echo "stderr" >&2 && exit 32')
         compare(
             capfd.readouterr().out,
             expected=(
-                '$ echo "some stuff" && exit 32\n'
+                '$ echo "stdout" >&1 && echo "stderr" >&2 && exit 32\n'
                 'returncode=32\n'
-                'some stuff\n'
+                'stdout\n'
+                'stderr\n'
             ),
         )
 

@@ -1,13 +1,13 @@
 import os
 import re
-from subprocess import check_output, CalledProcessError
+from subprocess import check_output, CalledProcessError, STDOUT
 
 
 def run(command):
     print('$ '+command)
     returncode = None
     try:
-        output = check_output(command, shell=True)
+        output = check_output(command, shell=True, stderr=STDOUT)
     except CalledProcessError as e:
         output = e.output
         returncode = e.returncode
