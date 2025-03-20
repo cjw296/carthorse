@@ -1,7 +1,7 @@
 import os
 from subprocess import CalledProcessError
 
-from testfixtures import compare, Replace, ShouldRaise
+from testfixtures import compare, Replace, ShouldRaise, StringComparison
 
 from carthorse.actions import run, create_tag, update_major_tag
 
@@ -22,10 +22,10 @@ class TestRun(object):
             run('/dev/null')
         compare(
             capfd.readouterr().out,
-            expected=(
-                '$ /dev/null\n'
+            expected=StringComparison(
+                r'\$ /dev/null\n'
                 'returncode=126\n'
-                '/bin/sh: /dev/null: Permission denied\n'
+                r'/bin/sh:( 1:)? /dev/null: Permission denied\n'
             ),
         )
 
