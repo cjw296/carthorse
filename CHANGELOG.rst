@@ -1,6 +1,11 @@
 Changes
 =======
 
+2.0.3 (20 Mar 2025)
+~~~~~~~~~~~~~~~~~~~
+
+- Better display of ``stdout`` and ``stderr`` context when errors occur using the ``run`` action.
+
 2.0.2 (20 Mar 2025)
 ~~~~~~~~~~~~~~~~~~~
 
