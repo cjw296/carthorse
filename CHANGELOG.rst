@@ -1,6 +1,11 @@
 Changes
 =======
 
+2.0.2 (20 Mar 2025)
+~~~~~~~~~~~~~~~~~~~
+
+- Better handling of errors when using the ``run`` action.
+
 2.0.1 (19 Mar 2025)
 ~~~~~~~~~~~~~~~~~~~
 
