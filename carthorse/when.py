@@ -1,5 +1,4 @@
 import os
-from subprocess import CalledProcessError
 
 from .actions import run
 
@@ -10,8 +9,8 @@ def version_not_tagged(remote='origin'):
         run("git fetch {} 'refs/tags/*:refs/tags/*'".format(remote))
     try:
         run('git rev-parse --verify -q '+version)
-    except CalledProcessError as e:
-        if e.returncode == 1:
+    except SystemExit as e:
+        if e.code == 1:
             print('No tag found.')
             return True
         raise

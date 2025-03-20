@@ -31,6 +31,7 @@ class TestVersionNotTagged(object):
             compare(out, expected=(
                 '$ git remote -v\n'
                 '$ git rev-parse --verify -q 1.2.3\n'
+                'returncode=1\n'
                 'No tag found.\n'
             ))
             compare(err, expected='')
@@ -55,21 +56,22 @@ class TestVersionNotTagged(object):
 
     def test_not_in_git_repo(self, dir, capfd):
         with Replace('os.environ.TAG', 'v1.2.3', strict=False):
-            with ShouldRaise(CalledProcessError):
+            with ShouldRaise(SystemExit):
                 version_not_tagged()
         out, err = capfd.readouterr()
-        compare(out, expected='$ git remote -v\n')
+        compare(out, expected='$ git remote -v\nreturncode=128\n')
         compare(err.lower(),
                 expected='fatal: not a git repository (or any of the parent directories): .git\n')
 
     def test_rev_parse_blows_up(self, dir):
+        exception = SystemExit(42)
         def run(command):
             if 'rev-parse' in command:
-                raise CalledProcessError(42, command)
+                raise exception
         with Replacer() as r:
             r.replace('os.environ.TAG', 'v1.2.3', strict=False)
             r.replace('carthorse.when.run', run)
-            with ShouldRaise(CalledProcessError):
+            with ShouldRaise(exception):
                 version_not_tagged()
 
     def test_version_tagged_upstream(self, git, capfd):

@@ -18,9 +18,27 @@ class TestRun(object):
             compare(capfd.readouterr().out, expected='$ echo $GREETING\nhello\n')
 
     def test_bad(self, capfd):
-        with ShouldRaise(CalledProcessError):
+        with ShouldRaise(SystemExit(126)):
             run('/dev/null')
-        capfd.readouterr()
+        compare(
+            capfd.readouterr().out,
+            expected=(
+                '$ /dev/null\n'
+                'returncode=126\n'
+            ),
+        )
+
+    def test_failure_with_output(self, capfd):
+        with ShouldRaise(SystemExit(32)):
+            run('echo "some stuff" && exit 32')
+        compare(
+            capfd.readouterr().out,
+            expected=(
+                '$ echo "some stuff" && exit 32\n'
+                'returncode=32\n'
+                'some stuff\n'
+            ),
+        )
 
     def test_non_ascii_output(self, capfd):
         run('echo "100% ━━━━━━━━━ 20.5/20.5 kB • 00:00 • 26.5 MB/s"')
@@ -63,10 +81,10 @@ class TestCreateTag(object):
             git('config user.name "Test User"')
             git("commit -am changed")
 
-            with ShouldRaise(CalledProcessError) as s:
+            with ShouldRaise(SystemExit) as s:
                 create_tag()
 
-            assert 'git push origin tag v1.2.3' in str(s.raised)
+            assert 'git push origin tag v1.2.3' in str(capfd.readouterr())
             git.check_tags(repo='remote', expected={b'v1.2.3': rev})
 
         capfd.readouterr()

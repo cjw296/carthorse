@@ -1,14 +1,24 @@
 import os
 import re
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 
 def run(command):
     print('$ '+command)
-    output = check_output(command, shell=True).decode().strip()
-    if output:
-        print(output)
-    return output
+    returncode = None
+    try:
+        output = check_output(command, shell=True)
+    except CalledProcessError as e:
+        output = e.output
+        returncode = e.returncode
+    if returncode is not None:
+        print(f'returncode={returncode}')
+    text = output.decode()
+    if text:
+        print(text, end='')
+    if returncode is not None:
+        raise SystemExit(returncode)
+    return text.strip()
 
 
 def create_tag(remote='origin', update=False):
